@@ -7,12 +7,23 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/open_pdf"
+        android:id="@+id/open_pdf_asset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open pdf"
-        android:textAllCaps="false"
         android:backgroundTint="@color/colorPrimary"
+        android:text="Open pdf from asset"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/open_pdf_file"
+        tools:layout_editor_absoluteX="123dp" />
+
+    <Button
+        android:id="@+id/open_pdf_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Open pdf from file"
+        android:textAllCaps="false"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

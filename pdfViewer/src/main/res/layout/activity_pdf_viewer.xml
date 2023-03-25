@@ -8,7 +8,7 @@
     android:background="?attr/pdfView_backgroundColor"
     tools:context=".PdfViewerActivity">
 
-    <include layout="@layout/pdf_view_tool_bar" />
+    <include layout="@layout/pdf_view_tool_bar" android:id="@+id/toolbarInclude" />
 
     <FrameLayout
         android:id="@+id/mainLayout"

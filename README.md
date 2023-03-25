@@ -46,15 +46,13 @@ Now you have integrated the library in your project but **how do you use it**? W
 ```kotlin
 open_pdf.setOnClickListener {
             startActivity(
-            
-            // Use 'launchPdfFromPath' if you want to use assets file (enable "fromAssets" flag) / internal directory
-           
-                PdfViewerActivity.launchPdfFromUrl(           //PdfViewerActivity.Companion.launchPdfFromUrl(..   :: incase of JAVA       
+
+            // Opening pdf from assets folder            
+                PdfViewerActivity.Companion.launchPdfFromPath(
                     context,                                                                      
-                    "pdf_url",                                // PDF URL in String format
-                    "Pdf title/name ",                        // PDF Name/Title in String format
-                    "pdf directory to save",                  // If nothing specific, Put "" it will save to Downloads
-                    enableDownload = false                    // This param is true by defualt.
+                    File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "yourfile.pdf").absolutePath,
+                    "PDF from File",
+					false
                 )
             )
         } 
@@ -66,14 +64,12 @@ open_pdf.setOnClickListener {
         open_pdf.setOnClickListener(view -> {
             startActivity(
             
-            // Opening pdf from assets folder 
+            // Opening pdf from assets folder
             
                     PdfViewerActivity.Companion.launchPdfFromPath(
                             this,
-                            "file_name.pdf",
-                            "Pdf title/name",
-                            "assets",
-                            false,
+                            "asst_name.pdf",
+                            "PDF" from Asset,
                             true
                     )
             );
@@ -133,8 +129,6 @@ Custom:
 | Attribute Name | Type | Expected changes |
 |--|--|--|
 |pdfView_backIcon|drawable|Navigation icon|
-|pdfView_downloadIcon|drawable|Download icon|
-|pdfView_downloadIconTint|color|Download icon tint|
 |pdfView_actionBarTint|color|Actionbar background color|
 |pdfView_titleTextStyle|style|Actionbar title text appearance|
 |pdfView_progressBar|style|Progress bar style|

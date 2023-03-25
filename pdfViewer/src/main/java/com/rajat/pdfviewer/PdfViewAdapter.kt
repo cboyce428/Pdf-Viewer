@@ -1,18 +1,19 @@
 package com.rajat.pdfviewer
 
-import android.graphics.Rect
-import android.view.ViewGroup
 import android.graphics.Bitmap
+import android.graphics.Rect
 import android.view.LayoutInflater
-import com.rajat.pdfviewer.util.hide
-import com.rajat.pdfviewer.util.show
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import androidx.core.view.updateLayoutParams
 import android.view.animation.LinearInterpolator
+import android.widget.FrameLayout
+import android.widget.ImageView
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.rajat.pdfviewer.databinding.ListItemPdfPageBinding
-import kotlinx.android.synthetic.main.list_item_pdf_page.view.*
-import kotlinx.android.synthetic.main.pdf_view_page_loading_layout.view.*
+import com.rajat.pdfviewer.util.hide
+import com.rajat.pdfviewer.util.show
 
 /**
  * Created by Rajat on 11,July,2020
@@ -24,6 +25,7 @@ internal class PdfViewAdapter(
     private val enableLoadingForPages: Boolean
 ) :
     RecyclerView.Adapter<PdfViewAdapter.PdfPageViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PdfPageViewHolder {
         return PdfPageViewHolder(
             ListItemPdfPageBinding.inflate(
@@ -45,43 +47,49 @@ internal class PdfViewAdapter(
     inner class PdfPageViewHolder(itemView: ListItemPdfPageBinding) : RecyclerView.ViewHolder(itemView.root) {
         fun bind(position: Int) {
             with(itemView) {
-                handleLoadingForPage(position)
+                handleLoadingForPage(this, position)
 
-                itemView.pageView.setImageBitmap(null)
+                val pageView: ImageView = findViewById(R.id.pageView);
+                val containerView: FrameLayout = findViewById(R.id.container_view);
+                val loadingProgress: FrameLayout = findViewById(R.id.loadingLayoutInclude);
+
+                pageView.setImageBitmap(null)
                 renderer.renderPage(position) { bitmap: Bitmap?, pageNo: Int ->
                     if (pageNo != position)
                         return@renderPage
                     bitmap?.let {
-                        container_view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        containerView.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                             height =
-                                (container_view.width.toFloat() / ((bitmap.width.toFloat() / bitmap.height.toFloat()))).toInt()
+                                (containerView.width.toFloat() / ((bitmap.width.toFloat() / bitmap.height.toFloat()))).toInt()
                             this.topMargin = pageSpacing.top
                             this.leftMargin = pageSpacing.left
                             this.rightMargin = pageSpacing.right
                             this.bottomMargin = pageSpacing.bottom
                         }
-                        itemView.pageView.setImageBitmap(bitmap)
-                        itemView.pageView.animation = AlphaAnimation(0F, 1F).apply {
+                        pageView.setImageBitmap(bitmap)
+                        pageView.animation = AlphaAnimation(0F, 1F).apply {
                             interpolator = LinearInterpolator()
                             duration = 300
                         }
 
-                        pdf_view_page_loading_progress.hide()
+                        loadingProgress.hide()
                     }
                 }
             }
         }
 
-        private fun handleLoadingForPage(position: Int) {
+        private fun handleLoadingForPage(page: View, position: Int) {
+            val loadingProgress: FrameLayout = page.findViewById(R.id.loadingLayoutInclude);
+
             if (!enableLoadingForPages) {
-                itemView.pdf_view_page_loading_progress.hide()
+                loadingProgress.hide()
                 return
             }
 
             if (renderer.pageExistInCache(position)) {
-                itemView.pdf_view_page_loading_progress.hide()
+                loadingProgress.hide()
             } else {
-                itemView.pdf_view_page_loading_progress.show()
+                loadingProgress.show()
             }
         }
     }
