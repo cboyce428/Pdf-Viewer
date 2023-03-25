@@ -69,7 +69,7 @@ open_pdf.setOnClickListener {
                     PdfViewerActivity.Companion.launchPdfFromPath(
                             this,
                             "asst_name.pdf",
-                            "PDF" from Asset,
+                            "PDF from Asset,
                             true
                     )
             );
