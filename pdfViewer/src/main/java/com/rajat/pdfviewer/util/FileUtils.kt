@@ -1,9 +1,6 @@
 package com.rajat.pdfviewer.util
 
 import android.content.Context
-import android.os.Environment
-import android.provider.MediaStore
-import android.text.TextUtils
 import java.io.*
 
 object FileUtils {
@@ -22,7 +19,7 @@ object FileUtils {
         var outputStream: OutputStream? = null
         try {
                 outputStream = FileOutputStream(output)
-            var read = 0
+            var read: Int
             val bytes = ByteArray(1024)
             while (inputStream!!.read(bytes).also { read = it } != -1) {
                 outputStream.write(bytes, 0, read)
@@ -36,16 +33,4 @@ object FileUtils {
         }
     }
 
-    @Throws(IOException::class)
-    fun downloadFile(context: Context, assetName: String, filePath: String, fileName: String?){
-
-       val dirPath = "${Environment.getExternalStorageDirectory()}/${filePath}"
-        val outFile = File(dirPath)
-        //Create New File if not present
-        if (!outFile.exists()) {
-            outFile.mkdirs()
-        }
-        val outFile1 = File(dirPath, "/$fileName.pdf")
-        copy(context.assets.open(assetName), outFile1)
-    }
 }
