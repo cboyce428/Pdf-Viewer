@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(
             PdfViewerActivity.Companion.launchPdfFromPath(
                 this,
-                "quote.pdf",
+                "singlepage.pdf",
                 "Asset Test",
                 true
             )
