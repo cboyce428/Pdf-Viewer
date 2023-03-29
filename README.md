@@ -1,17 +1,20 @@
 <h1 align="center">Pdf Viewer For Android</h1>
 
 <p align="center">
-A Simple PDF Viewer library which only occupies around <b>125kb</b> while most of the Pdf viewer occupies upto <b>16MB</b> space.
+A Simple PDF Viewer library which renders images via <a href="https://developer.android.com/reference/android/graphics/pdf/PdfRenderer.html">android.graphics.pdf.PdfRenderer</a>
 <br>
 <br>
-<img src="https://raw.githubusercontent.com/afreakyelf/Pdf-Viewer/master/Screenshot_2020-07-11-23-59-31-606_com.rajat.pdfviewer.jpg" width="420" height="840" />
+<img src="https://raw.githubusercontent.com/cboyce428/Pdf-Viewer/master/Screenshot_2020-07-11-23-59-31-606_com.rajat.pdfviewer.jpg" width="420" height="840" />
 </p>
 
 [![](https://jitpack.io/v/afreakyelf/Pdf-Viewer.svg)](https://jitpack.io/#afreakyelf/Pdf-Viewer) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/Apache-2.0) ![](https://img.shields.io/github/forks/afreakyelf/Pdf-Viewer?label=Forks)
 ![](https://img.shields.io/github/stars/afreakyelf/Pdf-Viewer?label=Stars&color=9cf) ![](https://visitor-badge.glitch.me/badge?page_id=afreakyelf.Pdf-Viewer)[![](https://jitci.com/gh/afreakyelf/Pdf-Viewer/svg)](https://jitci.com/gh/afreakyelf/Pdf-Viewer)
 
-## Who's using Pdf-Viewer?
-**👉 [Check out who's using Pdf-Viewer](/usecases.md)**
+## Why is this forked
+1. To remove excess permissions
+2. Removed download ability calling apps should be responsible for this & any cleanup
+3. Removed page numbers as did not work properly in landscape
+4. Update dependencies to latest versions & code changes due to removal of kotlin-android-extensions
 
 ## How to integrate into your app?
 Integrating the project is simple, All you need to do is follow the below steps
@@ -30,13 +33,13 @@ allprojects {
 Step 2. Add the dependency
 ```java
 dependencies {
-    implementation 'com.github.afreakyelf:Pdf-Viewer:v{Tag}'
+    implementation 'com.github.cboyce428:Pdf-Viewer:v{Tag}'
 }
 ```
 NOTE: Replace the tag with current release version, e.g
 
 ```java
-implementation 'com.github.afreakyelf:Pdf-Viewer:v1.0.7'
+implementation 'com.github.cboyce428:Pdf-Viewer:v1.1.1b'
 ```
 
 ## How to use the library?
@@ -47,12 +50,12 @@ Now you have integrated the library in your project but **how do you use it**? W
 open_pdf.setOnClickListener {
             startActivity(
 
-            // Opening pdf from assets folder            
+            // Opening pdf from file storage
                 PdfViewerActivity.Companion.launchPdfFromPath(
-                    context,                                                                      
+                    context,
                     File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "yourfile.pdf").absolutePath,
                     "PDF from File",
-					false
+                    false
                 )
             )
         } 
@@ -86,43 +89,18 @@ Note: If parent is not one of the themes from this library, all of the pdfView a
 
     <style name="Theme.PdfView.SelectedTheme" parent="@style/Theme.PdfView.Light">
         <item name="pdfView_backIcon">@drawable/ic_arrow_back</item>
-        ...
+        <item name="pdfView_actionBarTint">@color/red</item>
+        <item name="pdfView_titleTextStyle">@style/pdfView_titleTextAppearance</item>
+        <item name="pdfView_progressBar">@style/pdfView_progressBarStyle</item>
     </style>
 
+    <style name="Theme.PdfView.SelectedTheme" parent="@style/Theme.PdfView.Dark">
+        <item name="pdfView_backIcon">@drawable/ic_arrow_back</item>
+        <item name="pdfView_actionBarTint">@color/black</item>
+        <item name="pdfView_titleTextStyle">@style/pdfView_titleTextAppearance</item>
+        <item name="pdfView_progressBar">@style/pdfView_progressBarStyle</item>
+    </style>	
 
-#### Ui Customizations - Page number
-
-You need to add the custom layout to pdf_view_page_no.xml file and override the required attribute
-values.
-
-    <?xml version="1.0" encoding="utf-8"?>  
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"  
-      android:id="@+id/pageNo"  
-      android:layout_width="wrap_content"  
-      android:layout_height="wrap_content"  
-      android:layout_margin="18dp"  
-      android:background="#9C27B0"  
-      android:paddingStart="12dp"  
-      android:paddingTop="4dp"  
-      android:paddingEnd="12dp"  
-      android:paddingBottom="4dp"  
-      android:textColor="#ffffff"  
-      android:textSize="16sp"  
-      android:visibility="gone" />
-
-
-
-#### Ui Page number
-
-You need to add the custom string to strings.xml file and override the required strings.xml values.
-
-Default:
-
-    <string name="pdfView_page_no">%1$s of %2$s</string>
-
-Custom:
-
-    <string name="pdfView_page_no" >%1$s / %2$s</string>
 
 #### Supported attributes
 
